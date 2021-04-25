@@ -16,6 +16,7 @@ def add_new_client(_username,_hashed_password,_salt):
      new_client.save()
      return True
   except:
+     print("add_new_client error")
      return False
 
 def does_client_exist(_username):
@@ -28,7 +29,7 @@ def is_authenticated(_username,_password):
 
   client = Client.objects.get(username=_username)
   hashed_password = client.salt + _password
-  hashed_password = hashlib.md5(hashed_password.encode("utf-8")).hexdigest()
+  hashed_password = hashlib.sha256(hashed_password.encode("utf-8")).hexdigest()
 
   if (client.password == hashed_password):
      return True

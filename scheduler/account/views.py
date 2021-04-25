@@ -27,8 +27,8 @@ def register(request):
  
         hash_salt = password_salt()
         hashed_password  = hash_salt + password
-        hashed_password = hashlib.md5(hashed_password.encode("utf-8")).hexdigest() 
-        
+        #hashed_password = hashlib.md5(hashed_password.encode("utf-8")).hexdigest() 
+        hashed_password = hashlib.sha256(hashed_password.encode("utf-8")).hexdigest()
         if(db_agent.does_client_exist(username)):
           return HttpResponseForbidden()
         if(not db_agent.add_new_client(username,hashed_password,hash_salt)):
