@@ -1,42 +1,31 @@
 # main view file for django 
+from django.core import serializers
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-import account.database_agent as db_agent
-from .http_responses import HttpResponseOK,HttpResponseInternalError,HttpResponseNotFound,HttpResponseForbidden
+import database_agent as db_agent
+from http_responses import HttpResponseOK,HttpResponseInternalError,HttpResponseNotFound,HttpResponseForbidden
 import random
 import string
+import json
 import hashlib
-from .models import Client
 #creating databaseAgent object for database communucation 
-#@csrf_exempt
-def password_salt():
-   letters = string.ascii_letters
-   salt = ''
-   for i in range(10):
-       salt = salt + random.choice(letters)
-   return salt
-
-#NOTE: Add seperate registering function for Hair dressers and normal users
 @csrf_exempt
-def register(request):
-    if request.method == 'POST':
-       
-        username = request.POST.get('username',default=None)
-        password = request.POST.get('password',default=None)
- 
-        hash_salt = password_salt()
-        hashed_password  = hash_salt + password
-        #hashed_password = hashlib.md5(hashed_password.encode("utf-8")).hexdigest() 
-        hashed_password = hashlib.sha256(hashed_password.encode("utf-8")).hexdigest()
-        if(db_agent.does_client_exist(username)):
-          return HttpResponseForbidden()
-        if(not db_agent.add_new_client(username,hashed_password,hash_salt)):
-          return HttpResponseInternalError()
-        return HttpResponseOK()
-    else:
-    	return HttpResponseForbidden()
-           
+def getHairDressers(request):
+  if request.method == 'GET':
+     hairdrs = db_agent.getAllHairDr()
+     if not hairdrs:
+        return HttpResponseInternalError()
+
+     response = []
+     for hairdr in hairdrs:
+         response.append( {'username':hairdr.username,'email':hairdr.email,'firstName':hairdr.firstName,'lastName':hairdr.lastName,'location':hairdr.location,'phone':hairdr.phone,
+         'workHours':{'start':hairdr.startHour,'end':hairdr.endHour},'description':hairdr.description})    
+     
+     return JsonResponse({'hairdressers':response})
+
+  return HttpResponseForbidden()
+
 @csrf_exempt
 def login(request):
     if request.method == 'POST':

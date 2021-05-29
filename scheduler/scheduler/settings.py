@@ -25,7 +25,7 @@ SECRET_KEY = '_s=ib(2$*c0^_%u$q1!gml*)^sgp*ir3fppjvm_du3en&zwg&s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.106','127.0.0.1','*']
 
 
 # Application definition
@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'account.apps.AccountConfig',
-    'rest_framework',
-    
+    'hairdresser.apps.HairdresserConfig',
+    'client.apps.ClientConfig',
+    'rest_framework' 
 ]
 
 MIDDLEWARE = [
