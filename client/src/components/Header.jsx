@@ -47,6 +47,9 @@ function Header(props) {
                 <Link className={classes.link} to="/register">
                     Register
                 </Link>
+                <Link className={classes.link} to="/hairdressers">
+                    Hairdressers
+                </Link>
             </Toolbar>
         </AppBar>
         // <nav className="navbar navbar-expand-lg navbar-light bg-light">
