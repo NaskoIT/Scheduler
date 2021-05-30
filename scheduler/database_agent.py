@@ -3,6 +3,7 @@ import json
 import hashlib
 import jwt
 from account.models import Client,Hairdresser
+from api.models import Appointment
 #settings files for database communication 
 
 file = "psql_settings.json"
@@ -44,6 +45,7 @@ def getAllHairDr():
     return hairdr
   except:
     return {}
+
 def is_authenticated(_username,_password):
 
   client = Client.objects.get(username=_username)
@@ -62,5 +64,5 @@ def jwt_user_encoding(_username):
      return False
 
   # ADD DIFFERENT SECRET IN FUTURE  // SUGGEST RSA KEY
-  jwt_token = jwt.encode({"username":client.username,"password":client.password},"secret",algorithm="HS256").decode("utf-8")
+  jwt_token = jwt.encode({"client_username":client.username,"client_id":client.id},"secret",algorithm="HS256")
   return {"id":client.id,"jwt_token":jwt_token}

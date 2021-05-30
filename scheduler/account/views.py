@@ -29,14 +29,21 @@ def getHairDressers(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-       username = request.POST.get('username',default=None)
-       password = request.POST.get('password',default=None)
+       body_unicode=request.body.decode("utf-8")
+       request_body=json.loads(body_unicode)
+
+       password = request_body['password']
+       username = request_body['username']
+
+       if(not db_agent.does_client_exist(username)):
+            return HttpResponseForbidden()
        
-       if(not db_agent.does_client_exist(username) or not db_agent.is_authenticated(username,password)):
-          return HttpResponseForbidden()
+       if(not db_agent.is_authenticated(username,password)):
+            return HttpResponseForbidden()
 
        #implement jwt response to return on login 
        jwt_response = db_agent.jwt_user_encoding(username)
+       print(jwt_response)
        if (not jwt_response):
            print("Error at jwt_login")
            return HttpResponseInternalError()
