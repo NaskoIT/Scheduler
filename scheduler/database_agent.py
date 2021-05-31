@@ -1,27 +1,35 @@
-# module that is responsible mainly with database communications
-import json
-import hashlib
-import jwt
+# module that is responsible for database communications
 from account.models import Client,Hairdresser
 from api.models import Appointment
-#settings files for database communication 
+import hashlib
+import string
+import random
+import json
+import jwt
 
 file = "psql_settings.json"
-
+# creating 10 character salt for password hashing 
+def password_salt():
+  
+   letters = string.ascii_letters
+   salt = ''
+   for i in range(10):
+       salt = salt + random.choice(letters)
+   return salt
 #NOTE: don`t forget  when refering to variables in python class 
 #NOTE: add more complex returns to HttpResponse 
 
-def add_new_client(request_body,_salt):
+def addNewClient(request_body,_salt):
   new_client = Client(username = request_body['username'],salt = _salt,password = request_body['password'],firstName = request_body['firstName'],
     lastName = request_body['lastName'],phone = request_body['phone'],email = request_body['email'])
   try:
      new_client.save()
      return True
   except:
-     print("add_new_client error")
+     print("addNewClient error")
      return False
 
-def add_new_hairdresser(request_body,_salt):
+def addHairdresser(request_body,_salt):
   new_hairdr = Hairdresser(username = request_body['username'],firstName= request_body['firstName'],salt = _salt ,email = request_body['email'],password = request_body['password'],
     lastName = request_body['lastName'],location = request_body['location'],phone = request_body['phone'],description = request_body['description'],
     startHour = request_body['workHours']['start'],endHour = request_body['workHours']['end'])
@@ -32,12 +40,15 @@ def add_new_hairdresser(request_body,_salt):
     print("add_new_hairdresser error ")
     return False
 
-def does_client_exist(_username):
-  client_querry_set = Client.objects.filter(username = _username)
-  if (client_querry_set.exists()):
-     return True
-  return False
 
+def doesClientExist(_username):
+  try:
+    client_querry_set = Client.objects.filter(username = _username)
+    if (client_querry_set.exists()):
+       return True
+    return False
+  except:
+    return False
 def getAllHairDr():
   try:
     hairdr = Hairdresser.objects.all()
@@ -45,19 +56,41 @@ def getAllHairDr():
     return hairdr
   except:
     return {}
+def doesAppointmentExist(_client_id,request_body):
+    try:
+      appointment = Appointment.objects.filter(hairdr_id = request_body['hairdr_id'],client_id = _client_id)
 
-def is_authenticated(_username,_password):
+      if appointment.exists():
+         return True
+      return False
+    except:
+      print("error doesAppointmentExist")
+      return False
 
-  client = Client.objects.get(username=_username)
-  hashed_password = client.salt + _password
-  hashed_password = hashlib.sha256(hashed_password.encode("utf-8")).hexdigest()
+def addAppointment(_client_id, request_body):
+    try:
+      new_appointment = Appointment(client_id = _client_id,hairdr_id = request_body['hairdr_id'],
+      startHour = request_body['start'],endHour = request_body['end']) 
+      new_appointment.save()
+      return True
+    except:
+      return False
 
-  if (client.password == hashed_password):
-     return True
-  print("Error at is_authenticated")
-  return False
 
-def jwt_user_encoding(_username):
+def isAuthenticated(_username,_password):
+  try:
+    client = Client.objects.get(username=_username)
+    hashed_password = client.salt + _password
+    hashed_password = hashlib.sha256(hashed_password.encode("utf-8")).hexdigest()
+  
+    if (client.password == hashed_password):
+       return True
+    return False
+  except:
+    print("Error at isAuthenticated")
+    return False
+
+def jwtUserEncoding(_username):
   try:
      client = Client.objects.get(username=_username)
   except:
