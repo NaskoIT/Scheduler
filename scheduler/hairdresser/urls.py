@@ -1,9 +1,13 @@
 
 from django.urls import include, path
-from .views import register
+from .views import register,getAppointments
+
 urlpatterns = [ 
-    path('register',register)
+    path('register',register),
+    path('appointments',getAppointments)
+
 ]
+
 
 
 

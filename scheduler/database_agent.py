@@ -7,6 +7,7 @@ import random
 import json
 import jwt
 
+
 file = "psql_settings.json"
 # creating 10 character salt for password hashing 
 def password_salt():
@@ -40,7 +41,14 @@ def addHairdresser(request_body,_salt):
     print("add_new_hairdresser error ")
     return False
 
-
+def doesHairdresserExistById(_id):
+    try:
+        hairdr_querry =  Hairdresser.objects.filter(id = _id)
+        if hairdr_querry.exists():
+           return True
+        return False
+    except:
+    	return False
 def doesClientExist(_username):
   try:
     client_querry_set = Client.objects.filter(username = _username)
@@ -49,6 +57,7 @@ def doesClientExist(_username):
     return False
   except:
     return False
+
 def getAllHairDr():
   try:
     hairdr = Hairdresser.objects.all()
@@ -56,6 +65,7 @@ def getAllHairDr():
     return hairdr
   except:
     return {}
+
 def doesAppointmentExist(_client_id,request_body):
     try:
       appointment = Appointment.objects.filter(hairdr_id = request_body['hairdr_id'],client_id = _client_id)
@@ -69,12 +79,44 @@ def doesAppointmentExist(_client_id,request_body):
 
 def addAppointment(_client_id, request_body):
     try:
-      new_appointment = Appointment(client_id = _client_id,hairdr_id = request_body['hairdr_id'],
-      startHour = request_body['start'],endHour = request_body['end']) 
+    	new_appointment = Appointment(client_id = _client_id,hairdr_id = request_body['hairdr_id'],
+        startHour = request_body['start'],endHour = request_body['end'],date = request_body['date']) 
+    except: 
+        new_appointment = Appointment(client_id = _client_id,hairdr_id = request_body['hairdr_id'],
+        startHour = request_body['start'],endHour = request_body['end']) 
+      
+      	
+    try:  
       new_appointment.save()
       return True
     except:
+      print(request_body['date'])
       return False
+
+def changeDBAppointmentStatus(appo_id,appo_status):
+	try:
+	   appointment = Appointment.objects.get(id = appo_id)
+	   appointment.status = appo_status
+	   appointment.save()
+	   return True
+	except:
+	   return False
+
+def getAscAppointmentsById(_status,_hairdr_id):
+    appointments_for_id = Appointment.objects.filter(hairdr_id = _hairdr_id).order_by('date')
+    json_response_list = []
+
+    for appointment in appointments_for_id:
+      if appointment.status == _status:
+
+        client_by_id = Client.objects.get(id = appointment.client_id)
+
+       	json_response_list.append( {'id':appointment.id,'date':appointment.date,
+       	'start':appointment.startHour,'end':appointment.endHour,
+       	'user':{'username':client_by_id.username,'firstName':client_by_id.firstName,'lastName':client_by_id.lastName,
+       	'phone':client_by_id.phone}})
+
+    return json_response_list
 
 
 def isAuthenticated(_username,_password):

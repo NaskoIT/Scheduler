@@ -1,4 +1,5 @@
 from django.db import models
+from datetime import date
 
 class Appointment(models.Model):
     WAITING = 'WAIT'
@@ -8,6 +9,7 @@ class Appointment(models.Model):
 
     client_id = models.IntegerField()
     hairdr_id = models.IntegerField()
+    date = models.DateField(default = date.today)
     startHour = models.TimeField()
     endHour = models.TimeField()
     status = models.CharField(max_length = 10,choices = APPOINTMENT_STATUS_CHOICES,default = WAITING)
