@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Link } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -6,6 +6,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import BookAppointmentDialog from './BookAppointment';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -36,7 +37,7 @@ export default function HairdresserCard({hairdresser}) {
                         Location: {hairdresser.location}
                     </Typography>
                     <Typography variant="body2" component="p">
-                        Work hours: {hairdresser.workHours.start} - {hairdresser.workHours.to}
+                        Work hours: {hairdresser.workHours.start} - {hairdresser.workHours.end}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
                         {hairdresser.description}
@@ -44,9 +45,7 @@ export default function HairdresserCard({hairdresser}) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <Button size="small" color="primary">
-                    Book
-                </Button>
+                <BookAppointmentDialog />
             </CardActions>
         </Card>
     )
