@@ -122,7 +122,7 @@ def getAscAppointmentsById(_status,_hairdr_id):
         client_by_id = Client.objects.get(id = appointment.client_id)
 
        	json_response_list.append( {'id':appointment.id,'date':appointment.date,
-       	'start':appointment.startHour,'end':appointment.endHour,
+        'start':appointment.startHour,'end':appointment.endHour,
        	'user':{'username':client_by_id.username,'firstName':client_by_id.firstName,'lastName':client_by_id.lastName,
        	'phone':client_by_id.phone}})
 
@@ -132,7 +132,8 @@ def getAppointmentsByDate(_hairdr_id,_date):
   try:
     appointments = Appointment.objects.filter(hairdr_id = _hairdr_id,date=_date,status='ACCEPT').order_by('date')
     return appointments
-
+  except:
+    return None
 
 def isAuthenticated(_username,_password):
   try:
