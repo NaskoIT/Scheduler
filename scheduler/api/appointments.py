@@ -54,4 +54,12 @@ def addAppointment(request):
 
 @csrf_exempt
 def getAppointments():
-    pass
+    if not isAuthorized(request):
+      return HttpResponseForbidden()
+
+    if request.method == 'POST':
+
+      body_unicode = request.body.decode('utf-8')
+      request_body = json.loads(body_unicode)
+
+      booked_appointments = db_agent.getAppointmentsByDate(request_body['hairdresserId'],request_body['date'])

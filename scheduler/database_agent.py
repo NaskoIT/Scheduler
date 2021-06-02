@@ -49,9 +49,19 @@ def doesHairdresserExistById(_id):
         return False
     except:
     	return False
+
 def doesClientExist(_username):
   try:
     client_querry_set = Client.objects.filter(username = _username)
+    if (client_querry_set.exists()):
+       return True
+    return False
+  except:
+    return False
+
+def doesClientExistById(_client_id):
+  try:
+    client_querry_set = Client.objects.filter(id = _client_id)
     if (client_querry_set.exists()):
        return True
     return False
@@ -117,6 +127,11 @@ def getAscAppointmentsById(_status,_hairdr_id):
        	'phone':client_by_id.phone}})
 
     return json_response_list
+
+def getAppointmentsByDate(_hairdr_id,_date):
+  try:
+    appointments = Appointment.objects.filter(hairdr_id = _hairdr_id,date=_date,status='ACCEPT').order_by('date')
+    return appointments
 
 
 def isAuthenticated(_username,_password):
