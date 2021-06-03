@@ -16,8 +16,8 @@ def extractJwt(request):
 def isAuthorized(request):
     try:
         client_info = extractJwt(request)
-        if not doesClientExist(client_info['client_id']):
-          return False
+        if not db_agent.doesClientExistById(client_info['client_id']):
+           return False
 
         if client_info != None:
           return True
