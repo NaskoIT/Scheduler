@@ -7,6 +7,7 @@ import NotFound from './pages/notFound/notFound.jsx'
 import Header from './components/Header'
 import Hairdressers from './pages/hairdressers/all.jsx'
 import RegisterHairdresser from './pages/hairdressers/register.jsx'
+import HairdresserCalendar from './pages/hairdressers/calendar.jsx'
 import './App.css'
 
 export default function App() {
@@ -19,6 +20,7 @@ export default function App() {
         <Route path="/register" component={SignUp} />
         <Route path="/hairdressers" component={Hairdressers} />
         <Route path="/hairdresser/register" component={RegisterHairdresser} />
+        <Route path="/hairdresser/calendar" component={HairdresserCalendar} />
         <Route component={NotFound} />
       </Switch>
     </div>
