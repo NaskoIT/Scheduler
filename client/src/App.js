@@ -6,6 +6,7 @@ import SignUp from './pages/register/register.jsx'
 import NotFound from './pages/notFound/notFound.jsx'
 import Header from './components/Header'
 import Hairdressers from './pages/hairdressers/all.jsx'
+import RegisterHairdresser from './pages/hairdressers/register.jsx'
 import './App.css'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
         <Route path="/login" component={SignIn} />
         <Route path="/register" component={SignUp} />
         <Route path="/hairdressers" component={Hairdressers} />
+        <Route path="/hairdresser/register" component={RegisterHairdresser} />
         <Route component={NotFound} />
       </Switch>
     </div>
