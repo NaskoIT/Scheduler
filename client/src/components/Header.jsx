@@ -50,6 +50,9 @@ function Header(props) {
                 <Link className={classes.link} to="/hairdressers">
                     Hairdressers
                 </Link>
+                <Link className={classes.link} to="/hairdresser/calendar">
+                    Calendar
+                </Link>
             </Toolbar>
         </AppBar>
         // <nav className="navbar navbar-expand-lg navbar-light bg-light">

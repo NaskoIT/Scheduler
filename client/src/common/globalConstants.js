@@ -1,3 +1,4 @@
 export const dateTimeFormats = {
-    shortTime: 'HH:mm'
+    shortTime: 'HH:mm',
+    defaultDate: 'dd/MM/yyyy',
 }
