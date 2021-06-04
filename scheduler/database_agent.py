@@ -1,10 +1,10 @@
 # module that is responsible for database communications
+from default_params import *
 from account.models import Client,Hairdresser
 from api.models import Appointment
 import hashlib
 import string
 import random
-import json
 import jwt
 
 
@@ -14,15 +14,15 @@ def password_salt():
   
    letters = string.ascii_letters
    salt = ''
-   for i in range(10):
+   for i in range(SALT_LEN):
        salt = salt + random.choice(letters)
    return salt
 #NOTE: don`t forget  when refering to variables in python class 
 #NOTE: add more complex returns to HttpResponse 
 
 def addNewClient(request_body,_salt):
-  new_client = Client(username = request_body['username'],salt = _salt,password = request_body['password'],firstName = request_body['firstName'],
-    lastName = request_body['lastName'],phone = request_body['phone'],email = request_body['email'])
+  new_client = Client(username = request_body[KEY_REQ_USERNAME],salt = _salt,password = request_body[KEY_REQ_PASSWORD],firstName = request_body[KEY_REQ_FIRSTNAME],
+    lastName = request_body[KEY_REQ_LASTNAME],phone = request_body[KEY_REQ_PHONE],email = request_body[KEY_REQ_EMAIL])
   try:
      new_client.save()
      return True
@@ -38,7 +38,7 @@ def addHairdresser(request_body,_salt):
     new_hairdr.save()
     return True
   except:
-    print("add_new_hairdresser error ")
+    print("addNewHairdresser error ")
     return False
 
 def doesHairdresserExistById(_id):
@@ -49,9 +49,19 @@ def doesHairdresserExistById(_id):
         return False
     except:
     	return False
+
 def doesClientExist(_username):
   try:
     client_querry_set = Client.objects.filter(username = _username)
+    if (client_querry_set.exists()):
+       return True
+    return False
+  except:
+    return False
+
+def doesClientExistById(_client_id):
+  try:
+    client_querry_set = Client.objects.filter(id = _client_id)
     if (client_querry_set.exists()):
        return True
     return False
@@ -112,12 +122,18 @@ def getAscAppointmentsById(_status,_hairdr_id):
         client_by_id = Client.objects.get(id = appointment.client_id)
 
        	json_response_list.append( {'id':appointment.id,'date':appointment.date,
-       	'start':appointment.startHour,'end':appointment.endHour,
+        'start':appointment.startHour,'end':appointment.endHour,
        	'user':{'username':client_by_id.username,'firstName':client_by_id.firstName,'lastName':client_by_id.lastName,
        	'phone':client_by_id.phone}})
 
     return json_response_list
 
+def getAppointmentsByDate(_hairdr_id,_date):
+  try:
+    appointments = Appointment.objects.filter(hairdr_id = _hairdr_id,date=_date,status='ACCEPT').order_by('date')
+    return appointments
+  except:
+    return None
 
 def isAuthenticated(_username,_password):
   try:

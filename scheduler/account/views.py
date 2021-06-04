@@ -1,6 +1,6 @@
 from default_request_imports import * 
 from jwt_misc import isAuthorized 
-
+from default_params import KEY_REQ_USERNAME,KEY_REQ_PASSWORD
 #creating databaseAgent object for database communucation 
 @csrf_exempt
 def getHairDressers(request):
@@ -24,12 +24,14 @@ def getHairDressers(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-
-       body_unicode=request.body.decode("utf-8")
-       request_body=json.loads(body_unicode)
-
-       password = request_body['password']
-       username = request_body['username']
+       try:
+          body_unicode=request.body.decode("utf-8")
+          request_body=json.loads(body_unicode)
+    
+          password = request_body[KEY_REQ_PASSWORD]
+          username = request_body[KEY_REQ_USERNAME]
+       except:
+          return HttpResponseForbidden()
 
        if(not db_agent.doesClientExist(username)):
             return HttpResponseForbidden()
@@ -39,7 +41,7 @@ def login(request):
 
        #implement jwt response to return on login 
        jwt_response = db_agent.jwtUserEncoding(username)
-       print(jwt_response)
+
        if (not jwt_response):
            print("Error at jwt_login")
            return HttpResponseInternalError()

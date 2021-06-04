@@ -1,4 +1,5 @@
 import jwt
+import database_agent as db_agent
 
 # extract and decode jwt token 
 def extractJwt(request):
@@ -13,10 +14,14 @@ def extractJwt(request):
        
 #check if jwt is valid 
 def isAuthorized(request):
-    try: 
-       if extractJwt(request) != None :
+    try:
+        client_info = extractJwt(request)
+        if not db_agent.doesClientExistById(client_info['client_id']):
+           return False
+
+        if client_info != None:
           return True
-       return False
+        return False
     except:
        return False
 
