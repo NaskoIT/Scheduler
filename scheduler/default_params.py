@@ -17,3 +17,6 @@ KEY_FOR_STARTHOUR = 'startHour'
 KEY_FOR_ENDHOUR = 'endHour'
 
 KEY_APP_STATUS_CHANGE = 'status'
+
+#Duration of the haircut (minutes)
+DEFAULT_HAIRCUT_DURATION=30

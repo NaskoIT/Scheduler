@@ -68,6 +68,12 @@ def doesClientExistById(_client_id):
   except:
     return False
 
+def getHairDrById(_hairdr_id):
+  try:
+    return Hairdresser.objects.get(id = _hairdr_id)
+  except:
+    return False  
+
 def getAllHairDr():
   try:
     hairdr = Hairdresser.objects.all()
@@ -130,7 +136,7 @@ def getAscAppointmentsById(_status,_hairdr_id):
 
 def getAppointmentsByDate(_hairdr_id,_date):
   try:
-    appointments = Appointment.objects.filter(hairdr_id = _hairdr_id,date=_date,status='ACCEPT').order_by('date')
+    appointments = Appointment.objects.filter(hairdr_id = _hairdr_id,date=_date,status='ACCP').order_by('date')
     return appointments
   except:
     return None
