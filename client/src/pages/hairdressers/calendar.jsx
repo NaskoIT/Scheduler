@@ -17,13 +17,17 @@ export default function Hairdressers() {
     const [appointments, setAppointments] = useState(getAppointments());
     const classes = useStyles();
 
+    const onDecline = (id) => {
+        setAppointments(appointments.filter(a => a.id != id));
+    }
+
     return (
         <Grid container className={classes.root} spacing={2}>
             <Grid item xs={12}>
                 <Grid container justify="center" spacing={5}>
                     {appointments.map(appointment => (
                         <Grid key={appointment.id} item>
-                            <AppointmentCard appointment={appointment} />
+                            <AppointmentCard appointment={appointment} onDecline={onDecline} />
                         </Grid>
                     ))}
                 </Grid>
