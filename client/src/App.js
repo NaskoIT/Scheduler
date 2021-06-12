@@ -1,5 +1,6 @@
 import React, { Fragment } from "react"
 import { Route, Switch } from "react-router-dom"
+import { toast } from 'react-toastify'
 import Home from './pages/home/home.jsx'
 import SignIn from './pages/login/login.jsx'
 import SignUp from './pages/register/register.jsx'
@@ -9,6 +10,12 @@ import Hairdressers from './pages/hairdressers/all.jsx'
 import RegisterHairdresser from './pages/hairdressers/register.jsx'
 import HairdresserCalendar from './pages/hairdressers/calendar.jsx'
 import './App.css'
+import 'react-toastify/dist/ReactToastify.css'
+
+toast.configure({
+  position: toast.POSITION.TOP_CENTER,
+  pauseOnHover: true,
+});
 
 export default function App() {
   return (

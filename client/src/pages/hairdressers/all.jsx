@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import HairdresserCard from '../../components/HairdresserCard'
+import { getHairdressers } from '../../services/hairdressersService';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -16,6 +17,13 @@ const useStyles = makeStyles(theme => ({
 export default function Hairdressers() {
     const [hairdressers, setHairdressers] = useState(hairdressersData);
     const classes = useStyles();
+
+    useEffect(() => {
+        getHairdressers()
+            .then(response => {
+                setHairdressers(response);
+            });
+    });
 
     return (
         <Grid container className={classes.root} spacing={2}>

@@ -9,6 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { register } from '../../services/usersService';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function RegisterHairdresser() {
+export default function SignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -50,7 +51,13 @@ export default function RegisterHairdresser() {
       password
     };
 
-    console.log(body);
+    register(body)
+    .then(response => {
+      
+    })
+    .catch(err => {
+
+    })
   }
 
   return (
