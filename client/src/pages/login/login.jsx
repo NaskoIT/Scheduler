@@ -9,6 +9,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { login } from '../../services/usersService';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -42,7 +44,14 @@ export default function SignIn() {
       password
     };
 
-    console.log(body);
+    login(body)
+      .then((response) => {
+        console.log(response);
+        toast.success('You have logged in successfully!');
+      })
+      .catch(() => {
+        toast.error('Invalid username or password!');
+      });
   }
 
   return (

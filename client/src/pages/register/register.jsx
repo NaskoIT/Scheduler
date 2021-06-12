@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { register } from '../../services/usersService';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,6 +40,8 @@ export default function SignUp() {
   const classes = useStyles();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -48,16 +51,18 @@ export default function SignUp() {
       firstName,
       lastName,
       email,
-      password
+      password,
+      username,
+      phone
     };
 
     register(body)
-    .then(response => {
-      
+    .then(() => {
+      toast.success('You have registered successfully!');
     })
-    .catch(err => {
-
-    })
+    .catch(response => {
+      toast.error('Invalid registration! Try again.');
+    });
   }
 
   return (
@@ -95,6 +100,29 @@ export default function SignUp() {
                 label="Last Name"
                 name="lastName"
                 autoComplete="lastName"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                onChange={(e) => setUsername(e.target.value)}
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                onChange={(e) => setPhone(e.target.value)}
+                variant="outlined"
+                required
+                fullWidth
+                type="phone"
+                id="phone"
+                label="Phone"
+                name="phone"
               />
             </Grid>
             <Grid item xs={12}>

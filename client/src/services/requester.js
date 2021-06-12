@@ -17,6 +17,8 @@ function buildRequestOptions(method) {
     if(bearerToken) {
         options['Authorization'] = 'Bearer ' + bearerToken;
     }
+
+    return options;
 }
 
 export async function get(path) {
