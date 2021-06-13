@@ -10,6 +10,7 @@ import { appRoutes } from '../constants/routes';
 import './Header.css'
 import AppContext from '../contexts/appContext';
 import { clearUserState } from '../services/localStorageService';
+import UserGreeting from './UserGreeting';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -52,8 +53,10 @@ function Header(props) {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-                {isLoggedIn &&
+                { 
+                    isLoggedIn &&
                     <>
+                        <UserGreeting username={appState.username} />
                         <Link className={classes.link} to={appRoutes.hairdressers.all}>
                             Hairdressers
                         </Link>
