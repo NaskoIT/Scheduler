@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { login } from '../../services/usersService';
 import { toast } from 'react-toastify';
+import { setBearerToken, setUser } from '../../services/localStorageService';
+import { appRoutes } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -33,6 +36,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignIn() {
+  const history = useHistory();
+
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -48,6 +53,11 @@ export default function SignIn() {
       .then((response) => {
         console.log(response);
         toast.success('You have logged in successfully!');
+        
+        setBearerToken(response.token);
+        setUser(response.user);
+        
+        history.push(appRoutes.hairdressers.all);
       })
       .catch(() => {
         toast.error('Invalid username or password!');
