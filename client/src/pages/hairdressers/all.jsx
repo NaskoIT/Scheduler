@@ -23,7 +23,7 @@ export default function Hairdressers() {
             .then(response => {
                 setHairdressers(response.hairdressers)
             });
-    });
+    }, []);
 
     return (
         <Grid container className={classes.root} spacing={2}>

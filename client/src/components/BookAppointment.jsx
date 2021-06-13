@@ -40,14 +40,10 @@ export default function BookAppointmentDialog(props) {
 
     const fetchFreeHours = () => {
         getAppointmentsByDateAndUser(selectedDate, props.hairdresserId)
-        .then(response => {
-            setFreeHours(response.appointments.filter(a => a.free));
-        });
+            .then(response => {
+                setFreeHours(response.appointments.filter(a => a.free));
+            });
     }
-
-    useEffect(() => {
-        fetchFreeHours();
-    });
 
     const handleChange = (event) => {
         setHour(event.target.value);
@@ -56,11 +52,11 @@ export default function BookAppointmentDialog(props) {
     const handleDateChange = (date) => {
         setSelectedDate(date);
         fetchFreeHours();
-
     };
 
     const handleClickOpen = () => {
         setOpen(true);
+        fetchFreeHours();
     };
 
     const handleClose = () => {
@@ -123,8 +119,8 @@ export default function BookAppointmentDialog(props) {
                                 value={hour}
                                 onChange={handleChange}
                             >
-                                {freeHours.map(a => (
-                                    <MenuItem value={formatAppointmentLabel(a)} key={formatAppointmentLabel(a)}>{formatAppointmentLabel(a)}</MenuItem>
+                                {freeHours.map((a, i) => (
+                                    <MenuItem value={formatAppointmentLabel(a)} key={i}>{formatAppointmentLabel(a)}</MenuItem>
                                 ))}
                             </Select>
                             <FormHelperText>Select your convenient hour</FormHelperText>

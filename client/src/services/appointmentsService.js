@@ -1,14 +1,16 @@
 import { toQueryString } from "../common/urlHelpers";
 import { apiRoutes } from "../constants/apiRoutes";
 import { get, post } from "./requester";
+import { format } from 'date-fns';
+import { dateTimeFormats } from '../common/globalConstants'
 
 export function getAppointmentsByDateAndUser(date, hairdresserId) {
     const queryParams = toQueryString({
-        date,
+        date: format(new Date(date), dateTimeFormats.machine),
         hairdresserId
     });
 
-    return get(apiRoutes.appointments + queryParams);
+    return get(apiRoutes.appointments.all + queryParams);
 }
 
 export function createAppointment(body) {
