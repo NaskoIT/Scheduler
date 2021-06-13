@@ -3,7 +3,7 @@ export const appRoutes = {
     login: '/login',
     register: '/register',
     hairdressers: {
-        all: '/hairdressers',
+        all: '/hairdressers/all',
         register: '/hairdressers/register',
         calendar: '/hairdressers/calendar'
     },

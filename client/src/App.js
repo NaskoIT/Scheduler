@@ -28,7 +28,7 @@ export default function App() {
         <Route path={appRoutes.register} component={SignUp} />
         <Route path={appRoutes.hairdressers.all} component={Hairdressers} />
         <Route path={appRoutes.hairdressers.register} component={RegisterHairdresser} />
-        <Route path={appRoutes.hairdressers.all} component={HairdresserCalendar} />
+        <Route path={appRoutes.hairdressers.calendar} component={HairdresserCalendar} />
         <Route component={NotFound} />
       </Switch>
     </div>

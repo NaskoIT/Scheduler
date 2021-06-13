@@ -1,6 +1,6 @@
 import jwt_decode from "jwt-decode";
 
-function validateJwt(token) {
+export function validateJwt(token) {
     if (!token) {
         return false;
     }
