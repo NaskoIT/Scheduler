@@ -23,3 +23,9 @@ export function getUsername() {
 export function getUserId() {
     return localStorage.getItem(USER_ID_KEY);
 }
+
+export function clearUserState() {
+    localStorage.removeItem(BEARER_TOKEN_KEY);
+    localStorage.removeItem(USER_ID_KEY);
+    localStorage.removeItem(USERNAME_KEY);
+}
