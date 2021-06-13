@@ -12,6 +12,7 @@ import ConfirmationDialog from './ComfirmationDialog';
 import { changeAppointmentStatus } from '../services/appointmentsService';
 import { APPOINTMENTS_STATUS } from '../common/modelConstants';
 import { toast } from 'react-toastify';
+import AppointmentInfo from './AppointmentInfo';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -64,15 +65,7 @@ export default function AppointmentCard({appointment, onDecline}) {
         <Card className={classes.card}>
             <CardActionArea>
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                        {`${appointment.user.firstName} ${appointment.user.lastName} - ${appointment.user.username}`}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                        {format(new Date(appointment.date), dateTimeFormats.defaultDate)} from {appointment.start} to {appointment.end}
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                       Phone: {appointment.user.phone}
-                    </Typography>
+                    <AppointmentInfo appointment={appointment} />
                 </CardContent>
             </CardActionArea>
             <CardActions>

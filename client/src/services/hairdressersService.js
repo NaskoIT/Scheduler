@@ -11,8 +11,8 @@ export function register(body) {
     return post(apiRoutes.hairdressers.register, body);
 }
 
-export function getHairdresserWaitingAppointments() {
-    const queryString = toQueryString({status: APPOINTMENTS_STATUS.WAITING});
+export function getHairdresserAppointments(status) {
+    const queryString = toQueryString({status});
     return get(apiRoutes.hairdressers.appointments + queryString);
 }
 

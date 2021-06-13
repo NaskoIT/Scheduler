@@ -5,6 +5,7 @@ export const appRoutes = {
     hairdressers: {
         all: '/hairdressers/all',
         register: '/hairdressers/register',
+        waitingAppointments: '/hairdressers/appointments/waiting',
         calendar: '/hairdressers/calendar'
     },
 }

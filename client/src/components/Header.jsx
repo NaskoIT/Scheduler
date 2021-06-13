@@ -60,6 +60,9 @@ function Header(props) {
                         <Link className={classes.link} to={appRoutes.hairdressers.all}>
                             Hairdressers
                         </Link>
+                        <Link className={classes.link} to={appRoutes.hairdressers.waitingAppointments}>
+                            Waiting Appointments
+                        </Link>
                         <Link className={classes.link} to={appRoutes.hairdressers.calendar}>
                             Calendar
                         </Link>
