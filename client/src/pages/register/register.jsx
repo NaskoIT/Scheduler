@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { register } from '../../services/usersService';
 import { toast } from 'react-toastify';
+import { appRoutes } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -37,6 +39,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function SignUp() {
+  const history = useHistory();
+
   const classes = useStyles();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -59,6 +63,7 @@ export default function SignUp() {
     register(body)
     .then(() => {
       toast.success('You have registered successfully!');
+      history.push(appRoutes.login);
     })
     .catch(response => {
       toast.error('Invalid registration! Try again.');

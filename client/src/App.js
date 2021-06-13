@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 import { Route, Switch } from "react-router-dom"
 import { toast } from 'react-toastify'
 import Home from './pages/home/home.jsx'
@@ -9,6 +9,7 @@ import Header from './components/Header'
 import Hairdressers from './pages/hairdressers/all.jsx'
 import RegisterHairdresser from './pages/hairdressers/register.jsx'
 import HairdresserCalendar from './pages/hairdressers/calendar.jsx'
+import { appRoutes } from "./constants/routes.js"
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -22,12 +23,12 @@ export default function App() {
     <div className="App">
       <Header />
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/login" component={SignIn} />
-        <Route path="/register" component={SignUp} />
-        <Route path="/hairdressers" component={Hairdressers} />
-        <Route path="/hairdresser/register" component={RegisterHairdresser} />
-        <Route path="/hairdresser/calendar" component={HairdresserCalendar} />
+        <Route path={appRoutes.home} exact component={Home} />
+        <Route path={appRoutes.login} component={SignIn} />
+        <Route path={appRoutes.register} component={SignUp} />
+        <Route path={appRoutes.hairdressers.all} component={Hairdressers} />
+        <Route path={appRoutes.hairdressers.register} component={RegisterHairdresser} />
+        <Route path={appRoutes.hairdressers.all} component={HairdresserCalendar} />
         <Route component={NotFound} />
       </Switch>
     </div>
