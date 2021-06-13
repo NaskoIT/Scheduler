@@ -168,7 +168,7 @@ export default function SignUp() {
           <Grid container justify="flex-end">
             <Grid item>
             <div className={classes.bottomLink}>
-                <Link to="/hairdresser/register" variant="body2">
+                <Link to={appRoutes.hairdressers.register} variant="body2">
                   Register as hairdresser
                 </Link>
               </div>

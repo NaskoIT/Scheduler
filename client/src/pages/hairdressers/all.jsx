@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Hairdressers() {
-    const [hairdressers, setHairdressers] = useState();
+    const [hairdressers, setHairdressers] = useState([]);
     const classes = useStyles();
 
     useEffect(() => {
