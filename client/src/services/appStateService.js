@@ -1,4 +1,4 @@
-import { getBearerToken, getUsername, getUserId } from "./localStorageService"
+import { getBearerToken, getUsername, getUserId, getIsHairdresser } from "./localStorageService"
 import { validateJwt } from './jwtHelper';
 
 export function userIsLoggedIn() {
@@ -11,5 +11,6 @@ export function getAppState() {
         isLoggedIn: userIsLoggedIn(),
         username: getUsername(),
         userId: getUserId(),
+        isHairdresser: getIsHairdresser(),
     }
 }

@@ -58,9 +58,16 @@ export default function SignIn() {
         setUser({
           username,
           id: response.id,
+          isHairdresser: response.isHairdresser,
         });
-
-        setAppState(state => ({ ...state, isLoggedIn: true, username, userId: response.id }));
+        
+        setAppState(state => ({ 
+          ...state, 
+          isLoggedIn: true, 
+          username, 
+          userId: response.id,
+          isHairdresser: response.isHairdresser,
+         }));
 
         toast.success('You have logged in successfully!');
         history.push(appRoutes.hairdressers.all);

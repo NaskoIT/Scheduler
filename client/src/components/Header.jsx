@@ -38,7 +38,6 @@ const useStyles = makeStyles((theme) => {
 function Header(props) {
     const classes = useStyles();
     const [appState, setAppState] = React.useContext(AppContext);
-    const isLoggedIn = appState.isLoggedIn;
     const history = useHistory();
 
     const onLogout = () => {
@@ -54,25 +53,32 @@ function Header(props) {
                     <MenuIcon />
                 </IconButton>
                 { 
-                    isLoggedIn &&
+                    appState.isLoggedIn &&
                     <>
                         <UserGreeting username={appState.username} />
-                        <Link className={classes.link} to={appRoutes.hairdressers.all}>
-                            Hairdressers
-                        </Link>
-                        <Link className={classes.link} to={appRoutes.hairdressers.waitingAppointments}>
-                            Waiting Appointments
-                        </Link>
-                        <Link className={classes.link} to={appRoutes.hairdressers.calendar}>
-                            Calendar
-                        </Link>
+                        
+                        { !appState.isHairdresser &&
+                            <Link className={classes.link} to={appRoutes.hairdressers.all}>
+                                Hairdressers
+                            </Link>
+                        }
+                        { appState.isHairdresser &&
+                            <>
+                                <Link className={classes.link} to={appRoutes.hairdressers.waitingAppointments}>
+                                    Waiting Appointments
+                                </Link>
+                                <Link className={classes.link} to={appRoutes.hairdressers.calendar}>
+                                    Calendar
+                                </Link>
+                            </>
+                        }
                         <Link className={classes.link} onClick={onLogout}>
                             Logout
                         </Link>
                     </>
                 }
                 {
-                    !isLoggedIn &&
+                    !appState.isLoggedIn &&
                     <>
                         <Link className={classes.link} to={appRoutes.login}>
                             Login
