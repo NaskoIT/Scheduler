@@ -1,17 +1,12 @@
-# main view file for django 
-from django.core import serializers
-from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import database_agent as db_agent
-from http_responses import HttpResponseOK,HttpResponseInternalError,HttpResponseNotFound,HttpResponseForbidden
-import random
-import string
-import json
-import hashlib
+from default_request_imports import * 
+from jwt_misc import isAuthorized 
+from default_params import KEY_REQ_USERNAME,KEY_REQ_PASSWORD
 #creating databaseAgent object for database communucation 
 @csrf_exempt
 def getHairDressers(request):
+  if not isAuthorized(request):
+     return HttpResponseForbidden()
+     
   if request.method == 'GET':
      hairdrs = db_agent.getAllHairDr()
      if not hairdrs:
@@ -29,14 +24,24 @@ def getHairDressers(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
-       username = request.POST.get('username',default=None)
-       password = request.POST.get('password',default=None)
-       
-       if(not db_agent.does_client_exist(username) or not db_agent.is_authenticated(username,password)):
+       try:
+          body_unicode=request.body.decode("utf-8")
+          request_body=json.loads(body_unicode)
+    
+          password = request_body[KEY_REQ_PASSWORD]
+          username = request_body[KEY_REQ_USERNAME]
+       except:
           return HttpResponseForbidden()
 
+       if(not db_agent.doesClientExist(username)):
+            return HttpResponseForbidden()
+
+       if(not db_agent.isAuthenticated(username,password)):
+            return HttpResponseForbidden()
+
        #implement jwt response to return on login 
-       jwt_response = db_agent.jwt_user_encoding(username)
+       jwt_response = db_agent.jwtUserEncoding(username)
+
        if (not jwt_response):
            print("Error at jwt_login")
            return HttpResponseInternalError()

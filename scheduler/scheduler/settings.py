@@ -25,7 +25,7 @@ SECRET_KEY = '_s=ib(2$*c0^_%u$q1!gml*)^sgp*ir3fppjvm_du3en&zwg&s'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.0.106','127.0.0.1','*']
+ALLOWED_HOSTS = ['127.0.0.1','*']
 
 
 # Application definition
@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'api.apps.ApiConfig',
     'account.apps.AccountConfig',
     'hairdresser.apps.HairdresserConfig',
-    'client.apps.ClientConfig',
-    'rest_framework' 
+    'client.apps.ClientConfig'
 ]
 
 MIDDLEWARE = [
@@ -86,15 +85,15 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'barber',
-        'USER': 'admin',
-        'PASSWORD': '1234',
+        'NAME': 'scheduler',
+        'USER': 'scheduler_admin',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT':'5432',
     }
-}
+} 
 
-
+ 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 

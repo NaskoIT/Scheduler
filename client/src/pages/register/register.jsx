@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -9,6 +10,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import { register } from '../../services/usersService';
+import { toast } from 'react-toastify';
+import { appRoutes } from '../../constants/routes'
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,12 +32,20 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  bottomLink: {
+    textAlign: 'right',
+    marginBottom: theme.spacing(1)
+  }
 }));
 
 export default function SignUp() {
+  const history = useHistory();
+
   const classes = useStyles();
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -43,10 +55,19 @@ export default function SignUp() {
       firstName,
       lastName,
       email,
-      password
+      password,
+      username,
+      phone
     };
 
-    console.log(body);
+    register(body)
+    .then(() => {
+      toast.success('You have registered successfully!');
+      history.push(appRoutes.login);
+    })
+    .catch((err) => {
+      toast.error('Invalid registration! Try again.');
+    });
   }
 
   return (
@@ -88,6 +109,29 @@ export default function SignUp() {
             </Grid>
             <Grid item xs={12}>
               <TextField
+                onChange={(e) => setUsername(e.target.value)}
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                onChange={(e) => setPhone(e.target.value)}
+                variant="outlined"
+                required
+                fullWidth
+                type="phone"
+                id="phone"
+                label="Phone"
+                name="phone"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
                 onChange={(e) => setEmail(e.target.value)}
                 variant="outlined"
                 required
@@ -123,9 +167,14 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link to="/login" variant="body2">
-                Already have an account? Sign in
-              </Link>
+            <div className={classes.bottomLink}>
+                <Link to={appRoutes.hairdressers.register} variant="body2">
+                  Register as hairdresser
+                </Link>
+              </div>
+                <Link to="/login" variant="body2">
+                  Already have an account? Sign in
+                </Link>
             </Grid>
           </Grid>
         </form>
