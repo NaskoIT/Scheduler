@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: 25
     },
     card: {
-        height: 100,
+        height: 120,
         width: 300,
         textAlign: 'left',
     },
@@ -29,7 +29,7 @@ export default function HairdresserWaitingAppointments() {
             .then(response => {
                 setAppointments(response.appointments);
             })
-    });
+    }, []);
 
     return (
         <Grid container className={classes.root} spacing={2}>

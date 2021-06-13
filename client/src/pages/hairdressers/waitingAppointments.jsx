@@ -21,7 +21,6 @@ export default function HairdresserWaitingAppointments() {
 
     const onDecline = (id) => {
         setAppointments(appointments.filter(a => a.id != id));
-        
     }
 
     useEffect(() => {
@@ -29,7 +28,7 @@ export default function HairdresserWaitingAppointments() {
             .then(response => {
                 setAppointments(response.appointments);
             })
-    });
+    }, []);
 
     return (
         <Grid container className={classes.root} spacing={2}>

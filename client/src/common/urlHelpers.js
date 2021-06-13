@@ -1,3 +1,3 @@
 export function toQueryString(obj) {
-    new URLSearchParams(obj).toString();
+    return '?' +  new URLSearchParams(obj).toString();
 }
