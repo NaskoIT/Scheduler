@@ -15,8 +15,12 @@ export function createAppointment(body) {
     post(apiRoutes.appointments.create, body);
 }
 
+export function changeAppointmentStatus(id, status) {
+    post(apiRoutes.appointments.changeStatus, { id, status });
+}
+
 // Mocked appointments data
-const appointments = [
+export const appointments = [
     {
         id: 1,
         date: "2021-05-31",

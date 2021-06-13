@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button';
 import {format} from 'date-fns';
 import {dateTimeFormats} from '../common/globalConstants'
 import ConfirmationDialog from './ComfirmationDialog';
+import { changeAppointmentStatus } from '../services/appointmentsService';
+import { APPOINTMENTS_STATUS } from '../common/modelConstants';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -24,7 +27,6 @@ export default function AppointmentCard({appointment, onDecline}) {
 
     const [isOpenRejectConfirmation, setIsOpenRejectConfirmation] = useState(false);
     const [isOpenAcceptConfirmation, setIsOpenAcceptConfirmation] = useState(false);
-    const [lastDeclinedAppointmentId, setLastDeclinedAppointmentId] = useState(0);
 
     const rejectConfirmationTitle = "Are you sure, you want to reject this appointment!";
     const acceptConfirmationTitle = "Are you sure, you want to accept this agreement!";
@@ -38,20 +40,24 @@ export default function AppointmentCard({appointment, onDecline}) {
     }
 
     const onReject = () => {
-        // TODO: send the reject request
-        console.log(lastDeclinedAppointmentId);
-        onCloseRejectConfirmationDialog();
-        onDecline(lastDeclinedAppointmentId);
+        changeAppointmentStatus(appointment.id, APPOINTMENTS_STATUS.DECLINE)
+            .then(() => {
+                onCloseRejectConfirmationDialog();
+                onDecline(appointment.id);
+                toast.success('The appointment was declined successfully!');
+            });
     }
 
     const onAccept = () => {
-        // TODO: send the accept request
-        onCloseAcceptConfirmationDialog();
+        changeAppointmentStatus(appointment.id, APPOINTMENTS_STATUS.ACCEPT)
+            .then(() => {
+                onCloseAcceptConfirmationDialog();
+                toast.success('The appointment was accepted successfully!');
+            })
     }
 
-    const onRejectClick = (id) => {
+    const onRejectClick = () => {
         setIsOpenRejectConfirmation(true);
-        setLastDeclinedAppointmentId(id);
     }
 
     return (
@@ -73,7 +79,7 @@ export default function AppointmentCard({appointment, onDecline}) {
                 <Button color="primary" onClick={() => setIsOpenAcceptConfirmation(true)}>
                     Accept
                 </Button>
-                <Button color="primary" onClick={() => onRejectClick(appointment.id)}>
+                <Button color="primary" onClick={onRejectClick}>
                     Decline
                 </Button>
             </CardActions>
