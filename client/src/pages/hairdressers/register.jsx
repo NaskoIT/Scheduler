@@ -1,5 +1,6 @@
 import 'date-fns';
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +18,9 @@ import {
 } from '@material-ui/pickers';
 import { format } from 'date-fns';
 import { dateTimeFormats } from '../../common/globalConstants'
+import { register } from '../../services/hairdressersService';
+import { appRoutes } from '../../constants/routes' 
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -40,12 +44,16 @@ const useStyles = makeStyles((theme) => ({
   bottomLink: {
     textAlign: 'right',
     marginBottom: theme.spacing(1)
+  },
+  textarea: {
+    marginTop: theme.spacing(2)
   }
 }));
 
 export default function RegisterHairdresser() {
-
   const classes = useStyles();
+  const history = useHistory();
+
   const [username, setUsername] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -71,10 +79,18 @@ export default function RegisterHairdresser() {
       workHours: {
         start: format(startHour, dateTimeFormats.shortTime),
         end: format(endHour, dateTimeFormats.shortTime),
-      }
+      },
+      description
     };
 
-    console.log(body);
+    register(body)
+      .then(response => {
+        toast.success('You have registered successfully as a hairdresser!');
+        history.push(appRoutes.login);
+      })
+      .catch(err => {
+        toast.error('Sorry, your registration was invalid!. Please, try again.');
+      });
   }
 
   return (
@@ -204,6 +220,19 @@ export default function RegisterHairdresser() {
         />
             </Grid>
             </MuiPickersUtilsProvider>
+          </Grid>
+          <Grid xs={12}>
+            <TextField
+              className={classes.textarea}
+              onChange={(e) => setDescription(e.target.value)}
+              id="description"
+              label="Multiline Placeholder"
+              placeholder="Placeholder"
+              multiline
+              fullWidth
+              label="Description"
+              variant="outlined"
+            />
           </Grid>
           <Button
             type="submit"
