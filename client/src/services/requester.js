@@ -1,4 +1,5 @@
-import {appSettings} from "../constants/appSettings"
+import { ContactSupport } from "@material-ui/icons";
+import { appSettings } from "../constants/appSettings"
 import { getBearerToken } from "./localStorageService";
 
 function buildApiUrl(path) {
@@ -8,14 +9,14 @@ function buildApiUrl(path) {
 function buildRequestOptions(method) {
     let options = {
         method,
-        headers: { 
+        headers: new Headers({
             'Content-Type': 'application/json',
-        },
+        }),
     };
 
     const bearerToken = getBearerToken();
-    if(bearerToken) {
-        options['Authorization'] = 'Bearer ' + bearerToken;
+    if (bearerToken) {
+        options.headers.append('Authorization', 'Bearer ' + bearerToken);
     }
 
     return options;
@@ -31,5 +32,14 @@ export async function post(path, body) {
     requestOptions.body = JSON.stringify(body);
 
     const response = await fetch(buildApiUrl(path), requestOptions);
-    return await response.json();
+
+    if (response.ok) {
+        try {
+            return await response.json();
+        } catch {
+            return response;
+        }
+    }
+
+    throw response.statusText;
 }

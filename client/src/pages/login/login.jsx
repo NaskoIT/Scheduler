@@ -14,6 +14,7 @@ import { login } from '../../services/usersService';
 import { toast } from 'react-toastify';
 import { setBearerToken, setUser } from '../../services/localStorageService';
 import { appRoutes } from '../../constants/routes'
+import AppContext from '../../contexts/appContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -39,24 +40,29 @@ export default function SignIn() {
   const history = useHistory();
 
   const classes = useStyles();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  const [appState, setAppState] = React.useContext(AppContext);
 
   const onSubmit = (e) => {
     e.preventDefault();
     const body = {
-      email,
+      username,
       password
     };
 
     login(body)
       .then((response) => {
-        console.log(response);
+        setBearerToken(response.jwt_token);
+        setUser({
+          username,
+          id: response.id,
+        });
+
+        setAppState(state => ({ ...state, isLoggedIn: true, username, userId: response.id }));
+
         toast.success('You have logged in successfully!');
-        
-        setBearerToken(response.token);
-        setUser(response.user);
-        
         history.push(appRoutes.hairdressers.all);
       })
       .catch(() => {
@@ -78,14 +84,13 @@ export default function SignIn() {
           <Grid container spacing={3}>
             <Grid item xs={12}>
               <TextField
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
                 variant="outlined"
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
               />
             </Grid>
             <Grid item xs={12}>
@@ -114,7 +119,7 @@ export default function SignIn() {
           <Grid container justify="flex-end">
             <Grid item>
               <Link to="/register" variant="body2">
-              Already don't have an account? Sign up
+                Already don't have an account? Sign up
               </Link>
             </Grid>
           </Grid>

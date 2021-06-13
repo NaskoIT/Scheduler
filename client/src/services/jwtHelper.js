@@ -1,4 +1,5 @@
 import jwt_decode from "jwt-decode";
+import { getUserId } from "./localStorageService";
 
 export function validateJwt(token) {
     if (!token) {
@@ -7,7 +8,7 @@ export function validateJwt(token) {
 
     try {
         var decoded = jwt_decode(token);
-        return decoded && decoded.exp && validateJwtExpiration(decoded.exp);
+        return decoded && decoded.client_id == getUserId();
     }
     catch {
         return false;

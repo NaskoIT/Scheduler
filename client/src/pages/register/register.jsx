@@ -65,7 +65,7 @@ export default function SignUp() {
       toast.success('You have registered successfully!');
       history.push(appRoutes.login);
     })
-    .catch(response => {
+    .catch((err) => {
       toast.error('Invalid registration! Try again.');
     });
   }

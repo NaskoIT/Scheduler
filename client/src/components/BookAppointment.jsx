@@ -102,7 +102,7 @@ export default function BookAppointmentDialog({ }) {
                                 onChange={handleChange}
                             >
                                 {currentAppointments.map(a => (
-                                    <MenuItem value={formatAppointmentLabel(a)}>{formatAppointmentLabel(a)}</MenuItem>
+                                    <MenuItem value={formatAppointmentLabel(a)} key={formatAppointmentLabel(a)}>{formatAppointmentLabel(a)}</MenuItem>
                                 ))}
                             </Select>
                             <FormHelperText>Select your convenient hour</FormHelperText>
@@ -112,10 +112,10 @@ export default function BookAppointmentDialog({ }) {
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
-          </Button>
+                    </Button>
                     <Button onClick={bookAppointment} color="primary">
                         Book
-          </Button>
+                    </Button>
                 </DialogActions>
             </Dialog>
         </div>

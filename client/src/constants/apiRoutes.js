@@ -1,7 +1,8 @@
 export const apiRoutes = {
     hairdressers: {
         all: 'account/hairdressers',
-        register: 'account/hairdresser',
+        register: 'account/hairdresser/register',
+        appointments: 'account/hairdresser/appointments',
     },
     users: {
         register: 'account/client/register',

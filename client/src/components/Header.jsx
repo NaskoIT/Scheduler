@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { userIsLoggedIn } from '../services/appStateService';
 import { appRoutes } from '../constants/routes';
 import './Header.css'
+import AppContext from '../contexts/appContext';
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -34,7 +35,8 @@ const useStyles = makeStyles((theme) => {
 
 function Header(props) {
     const classes = useStyles();
-    const isLoggedIn = userIsLoggedIn();
+    const [ appState, setAppState ] = React.useContext(AppContext);
+    const isLoggedIn = appState.isLoggedIn;
 
     return (
         <AppBar position="static">
@@ -42,7 +44,7 @@ function Header(props) {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-                { !isLoggedIn &&
+                { isLoggedIn &&
                     <>
                         <Link className={classes.link} to={appRoutes.hairdressers.all}>
                             Hairdressers
@@ -58,7 +60,7 @@ function Header(props) {
                         <Link className={classes.link} to={appRoutes.login}>
                             Login
                         </Link>
-                        <Link className={classes.link} to={appRoutes.hairdressers.register}>
+                        <Link className={classes.link} to={appRoutes.register}>
                             Register
                         </Link>
                     </>
