@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import AppointmentCard from '../../components/AppointmentCard'
+import { getHairdresserAppointments } from '../../services/hairdressersService';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -14,12 +15,20 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Hairdressers() {
-    const [appointments, setAppointments] = useState(getAppointments());
+    const [appointments, setAppointments] = useState([]);
     const classes = useStyles();
 
     const onDecline = (id) => {
         setAppointments(appointments.filter(a => a.id != id));
+        
     }
+
+    useEffect(() => {
+        getHairdresserAppointments()
+            .then(response => {
+                setAppointments(response.appointments);
+            })
+    });
 
     return (
         <Grid container className={classes.root} spacing={2}>
@@ -34,33 +43,4 @@ export default function Hairdressers() {
             </Grid>
         </Grid>
     )
-}
-
-const getAppointments = () => {
-    return [
-        {
-            id: 1,
-            date: "2021-05-31",
-            start: "10:30",
-            end: "11:00",
-            user: {
-                username: "nasko.it",
-                firstName: "Atanas",
-                lastName: "Vasilev",
-                phone: "087123456",
-            }
-        },
-        {
-            id: 2,
-            date: "2021-06-31",
-            start: "11:30",
-            end: "12:00",
-            user: {
-                username: "vesko.it",
-                firstName: "Vesko",
-                lastName: "Vasilev",
-                phone: "087123456",
-            }
-        },
-    ]
 }

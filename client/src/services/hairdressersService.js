@@ -1,5 +1,5 @@
 import { get, post } from './requester.js';
-import {apiRoutes} from '../constants/apiRoutes.js';
+import { apiRoutes } from '../constants/apiRoutes.js';
 
 export function getHairdressers() {
     return get(apiRoutes.hairdressers.all);

@@ -45,7 +45,7 @@ export default function HairdresserCard({hairdresser}) {
                 </CardContent>
             </CardActionArea>
             <CardActions>
-                <BookAppointmentDialog />
+                <BookAppointmentDialog hairdresserId={hairdresser.id} />
             </CardActions>
         </Card>
     )

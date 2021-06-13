@@ -18,6 +18,8 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import { createAppointment, getAppointmentsByDateAndUser } from '../services/appointmentsService';
+import { toast } from 'react-toastify';
 
 const useStyles = makeStyles((theme) => ({
     hoursFormControl: {
@@ -28,14 +30,24 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BookAppointmentDialog({ }) {
+export default function BookAppointmentDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [selectedDate, setSelectedDate] = React.useState(new Date());
     const [hour, setHour] = React.useState('');
+    const [freeHours, setFreeHours] = useState([]);
 
     const classes = useStyles();
-    const currentAppointments = getCurrentAppointments().filter(a => a.free);
 
+    const fetchFreeHours = () => {
+        getAppointmentsByDateAndUser(selectedDate, props.hairdresserId)
+        .then(response => {
+            setFreeHours(response.appointments.filter(a => a.free));
+        });
+    }
+
+    useEffect(() => {
+        fetchFreeHours();
+    });
 
     const handleChange = (event) => {
         setHour(event.target.value);
@@ -43,6 +55,8 @@ export default function BookAppointmentDialog({ }) {
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
+        fetchFreeHours();
+
     };
 
     const handleClickOpen = () => {
@@ -56,17 +70,25 @@ export default function BookAppointmentDialog({ }) {
     const resetState = () => {
         setSelectedDate(new Date());
         setHour('');
+        fetchFreeHours();
     }
 
     const bookAppointment = () => {
         const body = {
             date: selectedDate,
             ...parseAppointment(hour),
+            hairdresserId: props.hairdresserId
         }
 
-        console.log(body);
-        handleClose();
-        resetState();
+        createAppointment(body)
+            .then(() => {
+                toast.success('Your appointment was successfully booked!');
+                handleClose();
+                resetState();
+            })
+            .catch(err => {
+                toast.error('Sorry, there was problem booking your appointment! Please, try again.');
+            });
     }
 
     return (
@@ -101,7 +123,7 @@ export default function BookAppointmentDialog({ }) {
                                 value={hour}
                                 onChange={handleChange}
                             >
-                                {currentAppointments.map(a => (
+                                {freeHours.map(a => (
                                     <MenuItem value={formatAppointmentLabel(a)} key={formatAppointmentLabel(a)}>{formatAppointmentLabel(a)}</MenuItem>
                                 ))}
                             </Select>
