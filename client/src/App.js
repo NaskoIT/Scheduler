@@ -22,7 +22,7 @@ toast.configure({
 });
 
 export default function App() {
-  const [ appState, setAppState ] = React.useState(getAppState());
+  const [appState, setAppState] = React.useState(getAppState());
 
   return (
     <AppContext.Provider value={[appState, setAppState]}>

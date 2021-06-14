@@ -3,7 +3,6 @@ const USERNAME_KEY = 'USERNAME';
 const USER_ID_KEY = 'USER_ID';
 const IS_HAIRDRESSER_KEY = 'IS_HAIRDRESSER';
 
-
 export function getBearerToken() {
     return localStorage.getItem(BEARER_TOKEN_KEY);
 }

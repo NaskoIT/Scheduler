@@ -1,7 +1,6 @@
 import { get, post } from './requester.js';
 import { apiRoutes } from '../constants/apiRoutes.js';
 import { toQueryString } from '../common/urlHelpers.js';
-import { APPOINTMENTS_STATUS } from '../common/modelConstants.js';
 
 export function getHairdressers() {
     return get(apiRoutes.hairdressers.all);
@@ -12,7 +11,7 @@ export function register(body) {
 }
 
 export function getHairdresserAppointments(status) {
-    const queryString = toQueryString({status});
+    const queryString = toQueryString({ status });
     return get(apiRoutes.hairdressers.appointments + queryString);
 }
 
