@@ -30,7 +30,8 @@ const useStyles = makeStyles((theme) => {
             '&:hover': {
                 color: '#dbdce2'
             },
-            textDecoration: 'none'
+            textDecoration: 'none',
+            cursor: 'pointer'
         },
     }
 });
@@ -38,12 +39,18 @@ const useStyles = makeStyles((theme) => {
 function Header(props) {
     const classes = useStyles();
     const [appState, setAppState] = React.useContext(AppContext);
-    const isLoggedIn = appState.isLoggedIn;
     const history = useHistory();
 
     const onLogout = () => {
         clearUserState();
-        setAppState(state => ({ ...state, isLoggedIn: false, username: '', id: undefined }));
+        setAppState(state => ({
+            ...state,
+            isLoggedIn: false,
+            username: '',
+            id: undefined,
+            isHairdresser: false
+        }));
+
         history.push(appRoutes.login);
     }
 
@@ -53,23 +60,32 @@ function Header(props) {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-                { 
-                    isLoggedIn &&
+                {
+                    appState.isLoggedIn &&
                     <>
                         <UserGreeting username={appState.username} />
-                        <Link className={classes.link} to={appRoutes.hairdressers.all}>
-                            Hairdressers
-                        </Link>
-                        <Link className={classes.link} to={appRoutes.hairdressers.calendar}>
-                            Calendar
-                        </Link>
-                        <Link className={classes.link} onClick={onLogout}>
+
+                        {!appState.isHairdresser &&
+                            <Link className={classes.link} to={appRoutes.hairdressers.all}>
+                                Hairdressers
+                            </Link>
+                        }
+                        {appState.isHairdresser &&
+                            <>
+                                <Link className={classes.link} to={appRoutes.hairdressers.waitingAppointments}>
+                                    Waiting Appointments
+                                </Link>
+                                <Link className={classes.link} to={appRoutes.hairdressers.calendar}>
+                                    Calendar
+                                </Link>
+                            </>
+                        }
+                        <span className={classes.link} onClick={onLogout}>
                             Logout
-                        </Link>
+                        </span>
                     </>
                 }
-                {
-                    !isLoggedIn &&
+                {!appState.isLoggedIn &&
                     <>
                         <Link className={classes.link} to={appRoutes.login}>
                             Login

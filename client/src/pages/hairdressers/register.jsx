@@ -79,8 +79,7 @@ export default function RegisterHairdresser() {
       workHours: {
         start: format(startHour, dateTimeFormats.shortTime),
         end: format(endHour, dateTimeFormats.shortTime),
-      },
-      description
+      }
     };
 
     register(body)

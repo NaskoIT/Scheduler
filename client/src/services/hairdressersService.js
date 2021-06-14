@@ -1,5 +1,6 @@
 import { get, post } from './requester.js';
-import {apiRoutes} from '../constants/apiRoutes.js';
+import { apiRoutes } from '../constants/apiRoutes.js';
+import { toQueryString } from '../common/urlHelpers.js';
 
 export function getHairdressers() {
     return get(apiRoutes.hairdressers.all);
@@ -9,8 +10,9 @@ export function register(body) {
     return post(apiRoutes.hairdressers.register, body);
 }
 
-export function getHairdresserAppointments() {
-    return get(apiRoutes.hairdressers.appointments);
+export function getHairdresserAppointments(status) {
+    const queryString = toQueryString({ status });
+    return get(apiRoutes.hairdressers.appointments + queryString);
 }
 
 // Mocked hairdressers data

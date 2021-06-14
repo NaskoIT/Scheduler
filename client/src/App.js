@@ -8,7 +8,8 @@ import NotFound from './pages/notFound/notFound.jsx'
 import Header from './components/Header'
 import Hairdressers from './pages/hairdressers/all.jsx'
 import RegisterHairdresser from './pages/hairdressers/register.jsx'
-import HairdresserCalendar from './pages/hairdressers/calendar.jsx'
+import HairdresserWaitingAppointments from './pages/hairdressers/waitingAppointments.jsx'
+import HairdresserCalendar from './pages/hairdressers/calendar.jsx';
 import { appRoutes } from "./constants/routes.js"
 import './App.css'
 import 'react-toastify/dist/ReactToastify.css'
@@ -21,7 +22,7 @@ toast.configure({
 });
 
 export default function App() {
-  const [ appState, setAppState ] = React.useState(getAppState());
+  const [appState, setAppState] = React.useState(getAppState());
 
   return (
     <AppContext.Provider value={[appState, setAppState]}>
@@ -33,6 +34,7 @@ export default function App() {
           <Route path={appRoutes.register} component={SignUp} />
           <Route path={appRoutes.hairdressers.all} component={Hairdressers} />
           <Route path={appRoutes.hairdressers.register} component={RegisterHairdresser} />
+          <Route path={appRoutes.hairdressers.waitingAppointments} component={HairdresserWaitingAppointments} />
           <Route path={appRoutes.hairdressers.calendar} component={HairdresserCalendar} />
           <Route component={NotFound} />
         </Switch>
