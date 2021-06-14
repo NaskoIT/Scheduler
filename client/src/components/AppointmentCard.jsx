@@ -4,11 +4,8 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import {format} from 'date-fns';
-import {dateTimeFormats} from '../common/globalConstants'
-import ConfirmationDialog from './ComfirmationDialog';
+import ConfirmationDialog from './ConfirmationDialog';
 import { changeAppointmentStatus } from '../services/appointmentsService';
 import { APPOINTMENTS_STATUS } from '../common/modelConstants';
 import { toast } from 'react-toastify';
@@ -20,10 +17,9 @@ const useStyles = makeStyles(theme => ({
         width: 300,
         textAlign: 'left',
     },
-
 }));
 
-export default function AppointmentCard({appointment, onDecline}) {
+export default function AppointmentCard({ appointment, onDecline }) {
     const classes = useStyles();
 
     const [isOpenRejectConfirmation, setIsOpenRejectConfirmation] = useState(false);
@@ -54,11 +50,7 @@ export default function AppointmentCard({appointment, onDecline}) {
             .then(() => {
                 onCloseAcceptConfirmationDialog();
                 toast.success('The appointment was accepted successfully!');
-            })
-    }
-
-    const onRejectClick = () => {
-        setIsOpenRejectConfirmation(true);
+            });
     }
 
     return (
@@ -72,19 +64,19 @@ export default function AppointmentCard({appointment, onDecline}) {
                 <Button color="primary" onClick={() => setIsOpenAcceptConfirmation(true)}>
                     Accept
                 </Button>
-                <Button color="primary" onClick={onRejectClick}>
+                <Button color="primary" onClick={() => setIsOpenRejectConfirmation(true)}>
                     Decline
                 </Button>
             </CardActions>
 
             <div>
-                <ConfirmationDialog 
+                <ConfirmationDialog
                     isOpen={isOpenRejectConfirmation}
                     onClose={onCloseRejectConfirmationDialog}
                     content={rejectConfirmationTitle}
                     onSuccess={onReject} />
 
-                <ConfirmationDialog 
+                <ConfirmationDialog
                     isOpen={isOpenAcceptConfirmation}
                     onClose={onCloseAcceptConfirmationDialog}
                     content={acceptConfirmationTitle}

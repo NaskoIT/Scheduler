@@ -31,7 +31,8 @@ const useStyles = makeStyles((theme) => {
             '&:hover': {
                 color: '#dbdce2'
             },
-            textDecoration: 'none'
+            textDecoration: 'none',
+            cursor: 'pointer'
         },
     }
 });
@@ -43,7 +44,14 @@ function Header(props) {
 
     const onLogout = () => {
         clearUserState();
-        setAppState(state => ({ ...state, isLoggedIn: false, username: '', id: undefined }));
+        setAppState(state => ({
+            ...state,
+            isLoggedIn: false,
+            username: '',
+            id: undefined,
+            isHairdresser: false
+        }));
+
         history.push(appRoutes.login);
     }
 
@@ -53,17 +61,17 @@ function Header(props) {
                 <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
                     <MenuIcon />
                 </IconButton>
-                { 
+                {
                     appState.isLoggedIn &&
                     <>
                         <UserGreeting username={appState.username} />
-                        
-                        { !appState.isHairdresser &&
+
+                        {!appState.isHairdresser &&
                             <Link className={classes.link} to={appRoutes.hairdressers.all}>
                                 Hairdressers
                             </Link>
                         }
-                        { appState.isHairdresser &&
+                        {appState.isHairdresser &&
                             <>
                                 <Link className={classes.link} to={appRoutes.hairdressers.waitingAppointments}>
                                     Waiting Appointments
@@ -73,13 +81,12 @@ function Header(props) {
                                 </Link>
                             </>
                         }
-                        <Button className={classes.link} onClick={onLogout}>
+                        <span className={classes.link} onClick={onLogout}>
                             Logout
-                        </Button>
+                        </span>
                     </>
                 }
-                {
-                    !appState.isLoggedIn &&
+                {!appState.isLoggedIn &&
                     <>
                         <Link className={classes.link} to={appRoutes.login}>
                             Login

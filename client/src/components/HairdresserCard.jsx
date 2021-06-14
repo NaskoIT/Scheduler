@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import BookAppointmentDialog from './BookAppointment';
 
@@ -14,10 +13,9 @@ const useStyles = makeStyles(theme => ({
         width: 350,
         textAlign: 'left',
     },
-
 }));
 
-export default function HairdresserCard({hairdresser}) {
+export default function HairdresserCard({ hairdresser }) {
     const classes = useStyles();
 
     return (

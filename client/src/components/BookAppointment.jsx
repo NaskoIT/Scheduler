@@ -18,8 +18,14 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
-import { createAppointment, getAppointmentsByDateAndUser } from '../services/appointmentsService';
+import {
+    createAppointment,
+    getAppointmentsByDateAndUser,
+    parseAppointment,
+    formatAppointmentLabel
+} from '../services/appointmentsService';
 import { toast } from 'react-toastify';
+import { dateTimeFormats } from '../common/globalConstants';
 
 const useStyles = makeStyles((theme) => ({
     hoursFormControl: {
@@ -66,7 +72,6 @@ export default function BookAppointmentDialog(props) {
     const resetState = () => {
         setSelectedDate(new Date());
         setHour('');
-        fetchFreeHours();
     }
 
     const bookAppointment = () => {
@@ -101,7 +106,7 @@ export default function BookAppointmentDialog(props) {
                             <KeyboardDatePicker
                                 disableToolbar
                                 variant="inline"
-                                format="dd/MM/yyyy"
+                                format={dateTimeFormats.defaultDate}
                                 margin="normal"
                                 id="date-picker-inline"
                                 label="Select appointment date"
@@ -138,47 +143,4 @@ export default function BookAppointmentDialog(props) {
             </Dialog>
         </div>
     );
-}
-
-const getCurrentAppointments = () => {
-    const start = new Date();
-    start.setHours(10);
-    start.setMinutes(0);
-
-    const appointments = [];
-
-    for (let i = 1; i <= 20; i++) {
-        let startTime = toTime(start);
-        start.setMinutes(start.getMinutes() + 30);
-        let endTime = toTime(start);
-
-        appointments.push({
-            start: startTime,
-            end: endTime,
-            free: (Boolean)(i % 2)
-        })
-    }
-
-    return appointments;
-}
-
-const toTime = (date) => {
-    let dateAsString = `${date.getHours()}:${date.getMinutes()}`;
-    if (date.getMinutes() === 0) {
-        dateAsString += '0';
-    }
-
-    return dateAsString;
-}
-
-const formatAppointmentLabel = (appointment) => {
-    return `${appointment.start} - ${appointment.end}`;
-}
-
-const parseAppointment = (appointmentLabel) => {
-    let parts = appointmentLabel.split(' - ');
-    return {
-        start: parts[0],
-        end: parts[1]
-    }
 }
