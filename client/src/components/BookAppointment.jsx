@@ -1,6 +1,6 @@
 import 'date-fns';
 import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,6 +18,14 @@ import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
 } from '@material-ui/pickers';
+import {
+    createAppointment,
+    getAppointmentsByDateAndUser,
+    parseAppointment,
+    formatAppointmentLabel
+} from '../services/appointmentsService';
+import { toast } from 'react-toastify';
+import { dateTimeFormats } from '../common/globalConstants';
 
 const useStyles = makeStyles((theme) => ({
     hoursFormControl: {
@@ -28,14 +36,20 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function BookAppointmentDialog({ }) {
+export default function BookAppointmentDialog(props) {
     const [open, setOpen] = React.useState(false);
     const [selectedDate, setSelectedDate] = React.useState(new Date());
     const [hour, setHour] = React.useState('');
+    const [freeHours, setFreeHours] = useState([]);
 
     const classes = useStyles();
-    const currentAppointments = getCurrentAppointments().filter(a => a.free);
 
+    const fetchFreeHours = () => {
+        getAppointmentsByDateAndUser(selectedDate, props.hairdresserId)
+            .then(response => {
+                setFreeHours(response.appointments.filter(a => a.free));
+            });
+    }
 
     const handleChange = (event) => {
         setHour(event.target.value);
@@ -43,10 +57,12 @@ export default function BookAppointmentDialog({ }) {
 
     const handleDateChange = (date) => {
         setSelectedDate(date);
+        fetchFreeHours();
     };
 
     const handleClickOpen = () => {
         setOpen(true);
+        fetchFreeHours();
     };
 
     const handleClose = () => {
@@ -62,11 +78,18 @@ export default function BookAppointmentDialog({ }) {
         const body = {
             date: selectedDate,
             ...parseAppointment(hour),
+            hairdresserId: props.hairdresserId
         }
 
-        console.log(body);
-        handleClose();
-        resetState();
+        createAppointment(body)
+            .then(() => {
+                toast.success('Your appointment was successfully booked!');
+                handleClose();
+                resetState();
+            })
+            .catch(err => {
+                toast.error('Sorry, there was problem booking your appointment! Please, try again.');
+            });
     }
 
     return (
@@ -83,7 +106,7 @@ export default function BookAppointmentDialog({ }) {
                             <KeyboardDatePicker
                                 disableToolbar
                                 variant="inline"
-                                format="dd/MM/yyyy"
+                                format={dateTimeFormats.defaultDate}
                                 margin="normal"
                                 id="date-picker-inline"
                                 label="Select appointment date"
@@ -101,8 +124,8 @@ export default function BookAppointmentDialog({ }) {
                                 value={hour}
                                 onChange={handleChange}
                             >
-                                {currentAppointments.map(a => (
-                                    <MenuItem value={formatAppointmentLabel(a)} key={formatAppointmentLabel(a)}>{formatAppointmentLabel(a)}</MenuItem>
+                                {freeHours.map((a, i) => (
+                                    <MenuItem value={formatAppointmentLabel(a)} key={i}>{formatAppointmentLabel(a)}</MenuItem>
                                 ))}
                             </Select>
                             <FormHelperText>Select your convenient hour</FormHelperText>
@@ -120,47 +143,4 @@ export default function BookAppointmentDialog({ }) {
             </Dialog>
         </div>
     );
-}
-
-const getCurrentAppointments = () => {
-    const start = new Date();
-    start.setHours(10);
-    start.setMinutes(0);
-
-    const appointments = [];
-
-    for (let i = 1; i <= 20; i++) {
-        let startTime = toTime(start);
-        start.setMinutes(start.getMinutes() + 30);
-        let endTime = toTime(start);
-
-        appointments.push({
-            start: startTime,
-            end: endTime,
-            free: (Boolean)(i % 2)
-        })
-    }
-
-    return appointments;
-}
-
-const toTime = (date) => {
-    let dateAsString = `${date.getHours()}:${date.getMinutes()}`;
-    if (date.getMinutes() === 0) {
-        dateAsString += '0';
-    }
-
-    return dateAsString;
-}
-
-const formatAppointmentLabel = (appointment) => {
-    return `${appointment.start} - ${appointment.end}`;
-}
-
-const parseAppointment = (appointmentLabel) => {
-    let parts = appointmentLabel.split(' - ');
-    return {
-        start: parts[0],
-        end: parts[1]
-    }
 }

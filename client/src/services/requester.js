@@ -1,4 +1,3 @@
-import { ContactSupport } from "@material-ui/icons";
 import { appSettings } from "../constants/appSettings"
 import { getBearerToken } from "./localStorageService";
 

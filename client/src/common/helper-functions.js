@@ -4,5 +4,4 @@ export function setInputValueToState(event, setState) {
 
 export function preventDefault(event) {
     event.preventDefault();
-} 
-    
+}

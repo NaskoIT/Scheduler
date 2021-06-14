@@ -61,13 +61,13 @@ export default function SignUp() {
     };
 
     register(body)
-    .then(() => {
-      toast.success('You have registered successfully!');
-      history.push(appRoutes.login);
-    })
-    .catch((err) => {
-      toast.error('Invalid registration! Try again.');
-    });
+      .then(() => {
+        toast.success('You have registered successfully!');
+        history.push(appRoutes.login);
+      })
+      .catch((err) => {
+        toast.error('Invalid registration! Try again.');
+      });
   }
 
   return (
@@ -167,14 +167,14 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-            <div className={classes.bottomLink}>
+              <div className={classes.bottomLink}>
                 <Link to={appRoutes.hairdressers.register} variant="body2">
                   Register as hairdresser
                 </Link>
               </div>
-                <Link to="/login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
+              <Link to="/login" variant="body2">
+                Already have an account? Sign in
+              </Link>
             </Grid>
           </Grid>
         </form>
