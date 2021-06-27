@@ -70,7 +70,12 @@ export default function SignIn() {
         }));
 
         toast.success('You have logged in successfully!');
-        history.push(appRoutes.hairdressers.all);
+
+        if (response.isHairdresser) {
+          history.push(appRoutes.hairdressers.calendar);
+        } else {
+          history.push(appRoutes.hairdressers.all);
+        }
       })
       .catch(() => {
         toast.error('Invalid username or password!');
