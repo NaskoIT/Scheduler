@@ -14,11 +14,11 @@ export function getAppointmentsByDateAndUser(date, hairdresserId) {
 }
 
 export function createAppointment(body) {
-    post(apiRoutes.appointments.create, body);
+    return post(apiRoutes.appointments.create, body);
 }
 
 export function changeAppointmentStatus(id, status) {
-    post(apiRoutes.appointments.changeStatus, { id, status });
+    return post(apiRoutes.appointments.changeStatus, { id, status });
 }
 
 export function toTime(date) {

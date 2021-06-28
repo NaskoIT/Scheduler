@@ -25,6 +25,7 @@ import {
     formatAppointmentLabel
 } from '../services/appointmentsService';
 import { toast } from 'react-toastify';
+import { format } from 'date-fns';
 import { dateTimeFormats } from '../common/globalConstants';
 
 const useStyles = makeStyles((theme) => ({
@@ -47,7 +48,7 @@ export default function BookAppointmentDialog(props) {
     const fetchFreeHours = () => {
         getAppointmentsByDateAndUser(selectedDate, props.hairdresserId)
             .then(response => {
-                setFreeHours(response.appointments.filter(a => a.free));
+                setFreeHours(response.all_appointments.filter(a => a.free === 'true'));
             });
     }
 
@@ -76,9 +77,9 @@ export default function BookAppointmentDialog(props) {
 
     const bookAppointment = () => {
         const body = {
-            date: selectedDate,
+            date: format(selectedDate, dateTimeFormats.machine),
             ...parseAppointment(hour),
-            hairdresserId: props.hairdresserId
+            hairdr_id: props.hairdresserId
         }
 
         createAppointment(body)

@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import AppointmentCard from '../../components/AppointmentCard'
 import { getHairdresserAppointments } from '../../services/hairdressersService';
 import { APPOINTMENTS_STATUS } from '../../common/modelConstants';
+import PageTitle from '../../components/PageTitle';
+import AlternativePageContent from '../../components/AlternativePageContent';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -19,8 +21,16 @@ export default function HairdresserWaitingAppointments() {
     const [appointments, setAppointments] = useState([]);
     const classes = useStyles();
 
-    const onDecline = (id) => {
+    const removeAppointment = (id) => {
         setAppointments(appointments.filter(a => a.id != id));
+    }
+
+    const onDecline = (id) => {
+        removeAppointment(id);
+    }
+
+    const onConfirm = (id) => {
+        removeAppointment(id);
     }
 
     useEffect(() => {
@@ -31,16 +41,23 @@ export default function HairdresserWaitingAppointments() {
     }, []);
 
     return (
-        <Grid container className={classes.root} spacing={2}>
-            <Grid item xs={12}>
-                <Grid container justify="center" spacing={5}>
-                    {appointments.map(appointment => (
-                        <Grid key={appointment.id} item>
-                            <AppointmentCard appointment={appointment} onDecline={onDecline} />
+        <>
+            <PageTitle content="Waiting Appointments" />
+            {appointments.length > 0 &&
+                <Grid container className={classes.root} spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container justify="center" spacing={5}>
+                            {appointments.map(appointment => (
+                                <Grid key={appointment.id} item>
+                                    <AppointmentCard appointment={appointment} onDecline={onDecline} onConfirm={onConfirm} />
+                                </Grid>
+                            ))}
                         </Grid>
-                    ))}
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Grid>
+            }
+            {appointments.length === 0 &&
+                <AlternativePageContent content="You have no waiting appointments!" />}
+        </>
     )
 }
