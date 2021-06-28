@@ -13,13 +13,13 @@ import AppointmentInfo from './AppointmentInfo';
 
 const useStyles = makeStyles(theme => ({
     card: {
-        height: 170,
+        height: 200,
         width: 300,
         textAlign: 'left',
     },
 }));
 
-export default function AppointmentCard({ appointment, onDecline }) {
+export default function AppointmentCard({ appointment, onDecline, onConfirm }) {
     const classes = useStyles();
 
     const [isOpenRejectConfirmation, setIsOpenRejectConfirmation] = useState(false);
@@ -49,6 +49,7 @@ export default function AppointmentCard({ appointment, onDecline }) {
         changeAppointmentStatus(appointment.id, APPOINTMENTS_STATUS.ACCEPT)
             .then(() => {
                 onCloseAcceptConfirmationDialog();
+                onConfirm(appointment.id)
                 toast.success('The appointment was accepted successfully!');
             });
     }

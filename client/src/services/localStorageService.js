@@ -26,7 +26,7 @@ export function getUserId() {
 }
 
 export function getIsHairdresser() {
-    return !!localStorage.getItem(IS_HAIRDRESSER_KEY);
+    return localStorage.getItem(IS_HAIRDRESSER_KEY) === 'true';
 }
 
 export function clearUserState() {
