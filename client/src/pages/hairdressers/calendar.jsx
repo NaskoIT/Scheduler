@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: 25
     },
     card: {
-        height: 120,
+        height: 150,
         width: 300,
         textAlign: 'left',
     },
